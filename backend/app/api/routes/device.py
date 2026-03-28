@@ -5,6 +5,7 @@ from app.dependencies.auth import get_current_device
 from app.dependencies.db import get_db
 from app.schemas.device import (
     DeviceCreate,
+    DeviceListOut,
     DeviceOut,
     DeviceRegisteredOut,
     DeviceSummaryOut,
@@ -39,15 +40,13 @@ def update_my_device(
     return device_to_out(updated)
 
 
-@router.get("/", response_model=list[DeviceSummaryOut])
+@router.get("/", response_model=DeviceListOut)
 def list_devices(
     db: Session = Depends(get_db),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=500),
 ):
-    """
-    Public device list (demo / local dashboards). Protect this in production
-    (e.g. admin token or user accounts) before exposing to the internet.
-    """
     service = DeviceService(db)
-    return service.list_devices(skip=skip, limit=limit)
+    total = service.count_devices()
+    rows = service.list_devices(skip=skip, limit=limit)
+    return DeviceListOut(items=rows, total=total)

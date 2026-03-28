@@ -22,8 +22,10 @@ def test_device_me_and_list(client):
 
     listed = client.get("/devices/")
     assert listed.status_code == 200
-    assert len(listed.json()) >= 1
-    assert listed.json()[0]["name"] == "Office"
+    body = listed.json()
+    assert body["total"] >= 1
+    assert len(body["items"]) >= 1
+    assert body["items"][0]["name"] == "Office"
 
 
 def test_patch_device(client):

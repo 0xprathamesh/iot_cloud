@@ -30,6 +30,9 @@ class DeviceService:
     def get_by_id(self, device_id: str) -> Device | None:
         return self.db.query(Device).filter(Device.id == device_id).first()
 
+    def count_devices(self) -> int:
+        return self.db.query(Device).count()
+
     def list_devices(self, skip: int = 0, limit: int = 100) -> list[Device]:
         return (
             self.db.query(Device)

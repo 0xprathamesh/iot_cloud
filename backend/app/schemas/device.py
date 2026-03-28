@@ -55,6 +55,11 @@ class DeviceSummaryOut(BaseModel):
     created_at: datetime
 
 
+class DeviceListOut(BaseModel):
+    items: list[DeviceSummaryOut]
+    total: int
+
+
 def device_to_out(device) -> DeviceOut:
     from app.core.security import api_key_hint
 

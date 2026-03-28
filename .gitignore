@@ -3,5 +3,4 @@ venv/
 .venv/
 __pycache__/
 *.pyc
-scripts/seed_db.py
 
